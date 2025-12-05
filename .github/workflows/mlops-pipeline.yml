@@ -1,0 +1,79 @@
+name: Wellness Tourism MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - main   # Trigger pipeline on push to main
+
+jobs:
+
+  register-dataset:
+    name: Register Dataset to Hugging Face
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r wellness/requirements.txt
+
+      - name: Upload Dataset to Hugging Face Hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python wellness/model_building/data_register.py
+
+
+  data-prep:
+    name: Data Preparation
+    needs: register-dataset
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r wellness/requirements.txt
+
+      - name: Run Data Preparation Script
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python wellness/model_building/prep.py
+
+
+  model-training:
+    name: Train Model & Log to MLflow
+    needs: data-prep
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r wellness/requirements.txt
+
+      - name: Start MLflow Server
+        run: |
+          nohup mlflow ui --host 0.0.0.0 --port 5000 &
+          sleep 5    # wait for MLflow UI to start
+
+      - name: Train Model
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python wellness/model_building/train.py
+
+
+  deploy-hosting:
+    name: Deploy Frontend to Hugging Face Space
+    needs: [register-dataset, data-prep, model-training]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r wellness/requirements.txt
+
+      - name: Deploy Frontend
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python wellness/hosting/hosting.py
