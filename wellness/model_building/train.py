@@ -24,10 +24,10 @@ api = HfApi()
 # ---------------------------
 # Load Data (from HF)
 # ---------------------------
-Xtrain_path = "hf://datasets/yadavgovind/tourism-data/Xtrain.csv"
-Xtest_path = "hf://datasets/yadavgovind/tourism-data/Xtest.csv"
-ytrain_path = "hf://datasets/yadavgovind/tourism-data/ytrain.csv"
-ytest_path = "hf://datasets/yadavgovind/tourism-data/ytest.csv"
+Xtrain_path = "hf://datasets/yadavgovind/wellness-tourism-space/Xtrain.csv"
+Xtest_path = "hf://datasets/yadavgovind/wellness-tourism-space/Xtest.csv"
+ytrain_path = "hf://datasets/yadavgovind/wellness-tourism-space/ytrain.csv"
+ytest_path = "hf://datasets/yadavgovind/wellness-tourism-space/ytest.csv"
 
 Xtrain = pd.read_csv(Xtrain_path)
 Xtest = pd.read_csv(Xtest_path)
@@ -151,7 +151,7 @@ with mlflow.start_run():
 
     print(f"Model saved as {model_path}")
 
-    repo_id = "yadavgovind/tourism-model"
+    repo_id = "yadavgovind/wellness-tourism-space"
     repo_type = "model"
 
     try:
