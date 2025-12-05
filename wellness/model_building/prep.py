@@ -12,7 +12,7 @@ from huggingface_hub import HfApi
 api = HfApi(token=os.getenv("HF_TOKEN"))
 
 # Path to dataset stored in Hugging Face Datasets
-DATASET_PATH = "hf://datasets/yadavgovind/wellness-tourism/tourism.csv"
+DATASET_PATH = "hf://datasets/yadavgovind/wellness-tourism-space/tourism.csv"
 
 # Load dataset
 tourism_df = pd.read_csv(DATASET_PATH)
