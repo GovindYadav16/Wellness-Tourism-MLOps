@@ -7,7 +7,7 @@ from huggingface_hub import hf_hub_download
 # Download model from HF Hub
 # -----------------------------
 model_path = hf_hub_download(
-    repo_id="yadavgovind/tourism-model",
+    repo_id="yadavgovind/wellness-tourism-space",
     filename="tourism_best_model_v1.joblib"
 )
 
